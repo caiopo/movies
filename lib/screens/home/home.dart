@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies/utils/colors.dart';
 import 'package:movies/utils/status.dart';
 import 'package:movies/viewmodels/config.dart';
 import 'package:movies/viewmodels/movies.dart';
@@ -22,16 +23,17 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Teste'),
-      ),
-      body: PaginatedList(
-        builder: (context, index) {
-          return MovieItem(
-            movie: movies.topRated.items[index],
-          );
-        },
-        paginator: movies.topRated,
+      backgroundColor: MoviesColors.cyan,
+      body: SafeArea(
+        child: PaginatedList(
+          builder: (context, index) {
+            return MovieItem(
+              movie: movies.topRated.items[index],
+//              onPress:
+            );
+          },
+          paginator: movies.topRated,
+        ),
       ),
     );
   }

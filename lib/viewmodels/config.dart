@@ -39,6 +39,14 @@ class ConfigViewModel extends ChangeNotifier {
     String width = _findWidth(minWidth, _config.images.posterSizes);
     return '${_config.images.imageBaseUrl}$width$path';
   }
+
+  String thumbnail(String path) {
+    return posterUrl(path, 150);
+  }
+
+  String splash(String path) {
+    return posterUrl(path, 400);
+  }
 }
 
 String _findWidth(int minWidth, List<String> availableWidths) {

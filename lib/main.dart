@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies/api/movies_service.dart';
 import 'package:movies/di/di.dart';
-import 'package:movies/screens/home.dart';
+import 'package:movies/screens/home/home.dart';
 import 'package:movies/viewmodels/config.dart';
 import 'package:movies/viewmodels/movies.dart';
 import 'package:provider/provider.dart';
