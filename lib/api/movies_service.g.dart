@@ -6,8 +6,8 @@ part of 'movies_service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-class _MovieService implements MovieService {
-  _MovieService(this._dio, {this.baseUrl}) {
+class _MoviesService implements MoviesService {
+  _MoviesService(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
   }
 
@@ -16,9 +16,10 @@ class _MovieService implements MovieService {
   String baseUrl;
 
   @override
-  getNowPlaying() async {
+  getNowPlaying(page) async {
+    ArgumentError.checkNotNull(page, 'page');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{'page': page};
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
         '/movie/now_playing',
@@ -29,14 +30,15 @@ class _MovieService implements MovieService {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = MoviePagedResponse.fromJson(_result.data);
+    final value = MoviePage.fromJson(_result.data);
     return Future.value(value);
   }
 
   @override
-  getPopular() async {
+  getPopular(page) async {
+    ArgumentError.checkNotNull(page, 'page');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{'page': page};
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
         '/movie/popular',
@@ -47,14 +49,15 @@ class _MovieService implements MovieService {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = MoviePagedResponse.fromJson(_result.data);
+    final value = MoviePage.fromJson(_result.data);
     return Future.value(value);
   }
 
   @override
-  getTopRated() async {
+  getTopRated(page) async {
+    ArgumentError.checkNotNull(page, 'page');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{'page': page};
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
         '/movie/top_rated',
@@ -65,14 +68,15 @@ class _MovieService implements MovieService {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = MoviePagedResponse.fromJson(_result.data);
+    final value = MoviePage.fromJson(_result.data);
     return Future.value(value);
   }
 
   @override
-  getUpcoming() async {
+  getUpcoming(page) async {
+    ArgumentError.checkNotNull(page, 'page');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{'page': page};
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
         '/movie/upcoming',
@@ -83,7 +87,7 @@ class _MovieService implements MovieService {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = MoviePagedResponse.fromJson(_result.data);
+    final value = MoviePage.fromJson(_result.data);
     return Future.value(value);
   }
 }

@@ -10,17 +10,21 @@ import 'package:movies/api/movies_service.dart';
 import 'package:dio/src/dio.dart';
 import 'package:movies/api/config_service.dart';
 import 'package:movies/viewmodels/config.dart';
+import 'package:movies/viewmodels/movies.dart';
 import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
   g.registerFactory<ApiSettings>(() => ApiSettings());
-  g.registerFactory<MovieService>(() => MoviesServiceImpl(
+  g.registerFactory<MoviesService>(() => MoviesServiceImpl(
         g<Dio>(),
         g<ApiSettings>(),
       ));
   g.registerFactory<ConfigService>(() => ConfigServiceImpl(
         g<Dio>(),
         g<ApiSettings>(),
+      ));
+  g.registerFactory<MoviesViewModel>(() => MoviesViewModel(
+        g<MoviesService>(),
       ));
   _registerEagerSingletons(g, environment);
 }

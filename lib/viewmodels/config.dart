@@ -42,7 +42,6 @@ class ConfigViewModel extends ChangeNotifier {
 }
 
 String _findWidth(int minWidth, List<String> availableWidths) {
-  print(availableWidths);
   for (final width in availableWidths) {
     final _w = _widthToInt(width);
 

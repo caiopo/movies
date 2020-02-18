@@ -3,7 +3,7 @@ import 'package:movies/models/models.dart';
 
 part 'response.g.dart';
 
-abstract class PagedResponse<T> {
+abstract class Page<T> {
   final List<T> results;
   final int page;
   @JsonKey(name: 'total_results')
@@ -11,7 +11,7 @@ abstract class PagedResponse<T> {
   @JsonKey(name: 'total_pages')
   final int totalPages;
 
-  PagedResponse({
+  Page({
     this.results,
     this.page,
     this.totalResults,
@@ -20,8 +20,8 @@ abstract class PagedResponse<T> {
 }
 
 @JsonSerializable()
-class MoviePagedResponse extends PagedResponse<Movie> {
-  MoviePagedResponse({
+class MoviePage extends Page<Movie> {
+  MoviePage({
     List<Movie> results,
     int page,
     int totalResults,
@@ -33,8 +33,8 @@ class MoviePagedResponse extends PagedResponse<Movie> {
           totalPages: totalPages,
         );
 
-  factory MoviePagedResponse.fromJson(Map<String, dynamic> json) =>
-      _$MoviePagedResponseFromJson(json);
+  factory MoviePage.fromJson(Map<String, dynamic> json) =>
+      _$MoviePageFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MoviePagedResponseToJson(this);
+  Map<String, dynamic> toJson() => _$MoviePageToJson(this);
 }

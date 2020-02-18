@@ -3,11 +3,12 @@ import 'package:movies/api/movies_service.dart';
 import 'package:movies/di/di.dart';
 import 'package:movies/screens/home.dart';
 import 'package:movies/viewmodels/config.dart';
+import 'package:movies/viewmodels/movies.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   configure();
-  final movies = await getIt<MovieService>().getPopular();
+  final movies = await getIt<MoviesService>().getPopular(1);
   for (final m in movies.results) {
     print('${m.title} ${m.posterPath}');
   }
@@ -20,7 +21,7 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => getIt<ConfigViewModel>()),
-//        ChangeNotifierProvider(create: (context) => getIt<ConfigState>()),
+        ChangeNotifierProvider(create: (context) => getIt<MoviesViewModel>()),
       ],
       child: MaterialApp(
         title: 'Movies',

@@ -1,29 +1,29 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:movies/api/settings.dart';
 import 'package:movies/api/response.dart';
+import 'package:movies/api/settings.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'movies_service.g.dart';
 
 @RestApi()
-abstract class MovieService {
+abstract class MoviesService {
   @GET('/movie/now_playing')
-  Future<MoviePagedResponse> getNowPlaying();
+  Future<MoviePage> getNowPlaying(@Query('page') int page);
 
   @GET('/movie/popular')
-  Future<MoviePagedResponse> getPopular();
+  Future<MoviePage> getPopular(@Query('page') int page);
 
   @GET('/movie/top_rated')
-  Future<MoviePagedResponse> getTopRated();
+  Future<MoviePage> getTopRated(@Query('page') int page);
 
   @GET('/movie/upcoming')
-  Future<MoviePagedResponse> getUpcoming();
+  Future<MoviePage> getUpcoming(@Query('page') int page);
 }
 
-@RegisterAs(MovieService)
+@RegisterAs(MoviesService)
 @injectable
-class MoviesServiceImpl extends _MovieService {
+class MoviesServiceImpl extends _MoviesService {
   MoviesServiceImpl(Dio dio, ApiSettings settings)
       : super(dio, baseUrl: settings.baseUrl);
 }
