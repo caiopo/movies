@@ -26,3 +26,33 @@ class Movie {
 
   Map<String, dynamic> toJson() => _$MovieToJson(this);
 }
+
+@JsonSerializable()
+class Config {
+  final ImageConfig images;
+
+  Config({this.images});
+
+  factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ConfigToJson(this);
+}
+
+@JsonSerializable()
+class ImageConfig {
+  @JsonKey(name: 'secure_base_url')
+  final String imageBaseUrl;
+
+  @JsonKey(name: 'poster_sizes')
+  final List<String> posterSizes;
+
+  ImageConfig({
+    this.imageBaseUrl,
+    this.posterSizes,
+  });
+
+  factory ImageConfig.fromJson(Map<String, dynamic> json) =>
+      _$ImageConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ImageConfigToJson(this);
+}

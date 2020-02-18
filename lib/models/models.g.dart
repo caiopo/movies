@@ -23,3 +23,29 @@ Map<String, dynamic> _$MovieToJson(Movie instance) => <String, dynamic>{
       'poster_path': instance.posterPath,
       'vote_average': instance.voteAverage,
     };
+
+Config _$ConfigFromJson(Map<String, dynamic> json) {
+  return Config(
+    images: json['images'] == null
+        ? null
+        : ImageConfig.fromJson(json['images'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
+      'images': instance.images,
+    };
+
+ImageConfig _$ImageConfigFromJson(Map<String, dynamic> json) {
+  return ImageConfig(
+    imageBaseUrl: json['secure_base_url'] as String,
+    posterSizes:
+        (json['poster_sizes'] as List)?.map((e) => e as String)?.toList(),
+  );
+}
+
+Map<String, dynamic> _$ImageConfigToJson(ImageConfig instance) =>
+    <String, dynamic>{
+      'secure_base_url': instance.imageBaseUrl,
+      'poster_sizes': instance.posterSizes,
+    };

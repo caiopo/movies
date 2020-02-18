@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:movies/api/config.dart';
+import 'package:movies/api/settings.dart';
 import 'package:movies/api/response.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -24,6 +24,6 @@ abstract class MovieService {
 @RegisterAs(MovieService)
 @injectable
 class MoviesServiceImpl extends _MovieService {
-  MoviesServiceImpl(Dio dio, ApiConfig config)
-      : super(dio, baseUrl: config.baseUrl);
+  MoviesServiceImpl(Dio dio, ApiSettings settings)
+      : super(dio, baseUrl: settings.baseUrl);
 }
