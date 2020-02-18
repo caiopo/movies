@@ -8,7 +8,10 @@ class MovieScreen extends StatefulWidget {
   final Movie movie;
   final String heroTag;
 
-  const MovieScreen({Key key, this.movie, this.heroTag}) : super(key: key);
+  const MovieScreen({Key key, this.movie, this.heroTag})
+      : assert(movie != null),
+        assert(heroTag != null),
+        super(key: key);
 
   @override
   _MovieScreenState createState() => _MovieScreenState();
@@ -24,8 +27,8 @@ class _MovieScreenState extends State<MovieScreen> {
         tag: Key(widget.heroTag),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(32),
-            bottomRight: Radius.circular(32),
+            bottomLeft: const Radius.circular(32),
+            bottomRight: const Radius.circular(32),
           ),
           child: Image.network(
             config.splash(widget.movie.posterPath),

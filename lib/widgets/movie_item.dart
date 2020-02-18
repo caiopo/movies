@@ -31,7 +31,7 @@ class MovieItem extends StatelessWidget {
         );
         await Navigator.push(
           context,
-          Routes.movie(
+          Routes.movieDetail(
             movie: movie,
             heroTag: heroTag,
           ),
