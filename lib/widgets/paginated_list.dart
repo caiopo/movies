@@ -4,11 +4,15 @@ import 'package:movies/api/paginator.dart';
 class PaginatedList extends StatefulWidget {
   final IndexedWidgetBuilder builder;
   final Paginator paginator;
+  final Axis scrollDirection;
+  final EdgeInsets padding;
 
   const PaginatedList({
     Key key,
     this.builder,
     this.paginator,
+    this.scrollDirection = Axis.vertical,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -46,6 +50,8 @@ class _PaginatedListState extends State<PaginatedList> {
       controller: _scrollController,
       itemBuilder: widget.builder,
       itemCount: widget.paginator.items.length,
+      padding: widget.padding,
+      scrollDirection: widget.scrollDirection,
     );
   }
 }
