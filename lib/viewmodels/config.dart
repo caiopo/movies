@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -26,13 +24,10 @@ class ConfigViewModel extends ChangeNotifier {
       _config = await _service.getConfig();
       _status = Status.success;
     } on DioError catch (e) {
-      print(e); // TODO
       _status = Status.error;
     } finally {
       notifyListeners();
     }
-
-    print(jsonEncode(_config));
   }
 
   String posterUrl(String path, int minWidth) {
@@ -44,7 +39,7 @@ class ConfigViewModel extends ChangeNotifier {
     return posterUrl(path, 150);
   }
 
-  String splash(String path) {
+  String full(String path) {
     return posterUrl(path, 400);
   }
 }

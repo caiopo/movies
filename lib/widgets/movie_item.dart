@@ -3,10 +3,11 @@ import 'package:movies/models/models.dart';
 import 'package:movies/screens/routes.dart';
 import 'package:movies/utils/random.dart';
 import 'package:movies/viewmodels/config.dart';
+import 'package:movies/widgets/movie_poster.dart';
 import 'package:movies/widgets/rating.dart';
 import 'package:provider/provider.dart';
 
-const _kPosterWidth = 130.0;
+const kPosterWidth = 130.0;
 
 class MovieItem extends StatelessWidget {
   final Movie movie;
@@ -26,7 +27,7 @@ class MovieItem extends StatelessWidget {
     return InkWell(
       onTap: () async {
         await precacheImage(
-          NetworkImage(config.splash(movie.posterPath)),
+          NetworkImage(config.full(movie.posterPath)),
           context,
         );
         await Navigator.push(
@@ -43,19 +44,18 @@ class MovieItem extends StatelessWidget {
           left: 8,
           right: 8,
         ),
-        child: LimitedBox(
-          maxWidth: _kPosterWidth,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: kPosterWidth),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Hero(
                 tag: Key(heroTag),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
-                  child: Image.network(
-                    config.thumbnail(movie.posterPath),
-                    width: _kPosterWidth,
-                  ),
+                child: MoviePoster(
+                  type: PosterType.thumbnail,
+                  movie: movie,
+                  config: config,
+                  width: kPosterWidth,
                 ),
               ),
               SizedBox(height: 8),
@@ -70,7 +70,7 @@ class MovieItem extends StatelessWidget {
               ),
               SizedBox(height: 4),
               Rating(rating: movie.voteAverage),
-              SizedBox(height: 16)
+              SizedBox(height: 8)
             ],
           ),
         ),

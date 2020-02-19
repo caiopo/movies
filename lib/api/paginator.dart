@@ -11,26 +11,36 @@ class Paginator<T> extends ChangeNotifier {
   bool _loading = false;
   bool _finished = false;
 
-  bool get loading => _loading;
-
-  bool get finished => _finished;
-
   Paginator(this._loader) {
     loadNextPage();
   }
+
+  bool get loading => _loading;
+
+  bool get finished => _finished;
 
   Future<void> loadNextPage() async {
     if (!_finished && !_loading) {
       _loading = true;
       notifyListeners();
 
-      final pageIndex = _nextPage++;
-      final page = await _loader(pageIndex);
+      final page = await _loader(_nextPage);
 
-      items.addAll(page.results);
-      _finished = page.page == page.totalPages;
+      if (page != null) {
+        items.addAll(page.results);
+        _finished = page.page == page.totalPages;
+        _nextPage++;
+      }
       _loading = false;
       notifyListeners();
     }
+  }
+
+  void reset() {
+    items.clear();
+    _nextPage = 1;
+    _loading = false;
+    _finished = false;
+    loadNextPage();
   }
 }

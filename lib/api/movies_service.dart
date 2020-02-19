@@ -19,6 +19,12 @@ abstract class MoviesService {
 
   @GET('/movie/upcoming')
   Future<MoviePage> getUpcoming(@Query('page') int page);
+
+  @GET('/search/movie')
+  Future<MoviePage> search(
+    @Query('query') String query,
+    @Query('page') int page,
+  );
 }
 
 @RegisterAs(MoviesService)

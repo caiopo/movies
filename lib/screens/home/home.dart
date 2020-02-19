@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:movies/api/paginator.dart';
+import 'package:movies/screens/home/movies_row.dart';
+import 'package:movies/screens/home/search_header.dart';
 import 'package:movies/utils/colors.dart';
+import 'package:movies/utils/debouncer.dart';
 import 'package:movies/utils/status.dart';
 import 'package:movies/viewmodels/config.dart';
 import 'package:movies/viewmodels/movies.dart';
-import 'package:movies/widgets/movie_item.dart';
-import 'package:movies/widgets/paginated_list.dart';
-import 'package:movies/widgets/search_field.dart';
+import 'package:movies/widgets/change_notifier_builder.dart';
+import 'package:movies/widgets/movies_grid.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,12 +18,43 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  ScrollController _scrollController;
   TextEditingController _searchTextController;
+  Debouncer<String> _searchDebouncer;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScrollChanged);
+
     _searchTextController = TextEditingController();
+    _searchTextController.addListener(_onSearchTextChanged);
+
+    _searchDebouncer = Debouncer(Duration(milliseconds: 500), (query) {
+      final movies = Provider.of<MoviesViewModel>(context, listen: false);
+      movies.query = query;
+    });
+  }
+
+  void _onScrollChanged() {
+    // close keyboard when textfield goes out of the screen
+    if (_scrollController.offset > 280) {
+      FocusScope.of(context).unfocus();
+    }
+
+    final diff =
+        _scrollController.position.maxScrollExtent - _scrollController.offset;
+
+    if (diff < 300) {
+      final movies = Provider.of<MoviesViewModel>(context, listen: false);
+      
+      movies.searchResults.loadNextPage();
+    }
+  }
+
+  void _onSearchTextChanged() {
+    _searchDebouncer.call(_searchTextController.text);
   }
 
   @override
@@ -34,127 +66,79 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final config = Provider.of<ConfigViewModel>(context);
-    final movies = Provider.of<MoviesViewModel>(context);
 
     if (config.status == Status.loading) {
       return Container();
     }
 
     return Scaffold(
-        backgroundColor: MoviesColors.primaryColor,
-        body: CustomScrollView(
-          physics: ClampingScrollPhysics(),
-          slivers: <Widget>[
-            SliverStickyHeader(
-              header: Container(
-                color: MoviesColors.cyan,
-                child: SafeArea(
-                  bottom: false,
-                  child: Container(),
-                ),
-              ),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  _SearchHeader(),
-                ]),
+      backgroundColor: MoviesColors.primaryColor,
+      body: CustomScrollView(
+        controller: _scrollController,
+        physics: ClampingScrollPhysics(),
+        slivers: <Widget>[
+          SliverStickyHeader(
+            header: Container(
+              color: MoviesColors.cyan,
+              child: SafeArea(
+                bottom: false,
+                child: Container(),
               ),
             ),
-            SliverStickyHeader(
-              header: _ListHeaderDecoration(),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  _MoviesRow(
-                    label: 'NOW PLAYING',
-                    paginator: movies.nowPlaying,
-                  ),
-                  _MoviesRow(
-                    label: 'POPULAR',
-                    paginator: movies.popular,
-                  ),
-                  _MoviesRow(
-                    label: 'TOP RATED',
-                    paginator: movies.topRated,
-                  ),
-                  Container(
-                    color: MoviesColors.primaryColor,
-                    child: SafeArea(
-                      top: false,
-                      child: _MoviesRow(
-                        label: 'UPCOMING',
-                        paginator: movies.upcoming,
-                      ),
-                    ),
-                  ),
-                ]),
-              ),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                SearchHeader(controller: _searchTextController),
+              ]),
             ),
-          ],
-        ));
-  }
-}
-
-class _MoviesRow extends StatelessWidget {
-  final String label;
-  final Paginator paginator;
-
-  const _MoviesRow({
-    Key key,
-    this.label,
-    this.paginator,
-  }) : super(key: key);
-
-  void onSeeAllPressed() {}
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: MoviesColors.primaryColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              SizedBox(width: 24),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Spacer(),
-              FlatButton(
-                onPressed: onSeeAllPressed,
-                child: Text(
-                  'See all',
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              SizedBox(width: 8),
-            ],
           ),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: 275,
-            ),
-            child: PaginatedList(
-              paginator: paginator,
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(left: 16),
-              builder: (context, index) {
-                final movie = paginator.items[index];
-
-                return MovieItem(
-                  movie: movie,
-                );
-              },
-            ),
+          SliverStickyHeader(
+            header: _ListHeaderDecoration(),
+            sliver: _buildHomeContent(),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildHomeContent() {
+    // don't rebuild everything if only a single paginator changes
+    final movies = Provider.of<MoviesViewModel>(context, listen: false);
+
+    return ChangeNotifierBuilder(
+      notifier: movies.searchResults,
+      builder: (context) {
+        if (movies.searchResults.loading ||
+            movies.searchResults.items.isNotEmpty) {
+          return MoviesGrid(paginator: movies.searchResults);
+        }
+
+        return SliverList(
+          delegate: SliverChildListDelegate([
+            MoviesRow(
+              label: 'NOW PLAYING',
+              paginator: movies.nowPlaying,
+            ),
+            MoviesRow(
+              label: 'POPULAR',
+              paginator: movies.popular,
+            ),
+            MoviesRow(
+              label: 'TOP RATED',
+              paginator: movies.topRated,
+            ),
+            Container(
+              color: MoviesColors.primaryColor,
+              child: SafeArea(
+                top: false,
+                child: MoviesRow(
+                  label: 'UPCOMING',
+                  paginator: movies.upcoming,
+                ),
+              ),
+            ),
+          ]),
+        );
+      },
     );
   }
 }
@@ -184,40 +168,6 @@ class _ListHeaderDecoration extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-}
-
-class _SearchHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: MoviesColors.cyan,
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 32,
-            left: 64,
-            right: 64,
-          ),
-          child: Column(
-            children: [
-              Text(
-                'Hello, what do you want to watch?',
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 24),
-              SearchField(),
-              SizedBox(height: 24),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies/models/models.dart';
 import 'package:movies/utils/colors.dart';
 import 'package:movies/viewmodels/config.dart';
+import 'package:movies/widgets/movie_poster.dart';
 import 'package:provider/provider.dart';
 
 class MovieScreen extends StatefulWidget {
@@ -25,15 +26,12 @@ class _MovieScreenState extends State<MovieScreen> {
       backgroundColor: MoviesColors.primaryColor,
       body: Hero(
         tag: Key(widget.heroTag),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            bottomLeft: const Radius.circular(32),
-            bottomRight: const Radius.circular(32),
-          ),
-          child: Image.network(
-            config.splash(widget.movie.posterPath),
-          ),
+        child: MoviePoster(
+          type: PosterType.full,
+          movie: widget.movie,
+          config: config,
         ),
+
       ),
     );
   }
