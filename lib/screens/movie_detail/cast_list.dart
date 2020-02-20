@@ -57,7 +57,7 @@ class CastItem extends StatelessWidget {
                 : null,
             backgroundImage: hasPhoto
                 ? NetworkImage(
-                    config.posterUrl(castMember.profilePath, 100),
+                    config.profileUrl(castMember.profilePath, 70),
                   )
                 : null,
             radius: 35,

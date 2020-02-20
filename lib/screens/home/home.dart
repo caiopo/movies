@@ -65,12 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final config = Provider.of<ConfigViewModel>(context);
-
-    if (config.status == Status.loading) {
-      return Container();
-    }
-
     return Scaffold(
       backgroundColor: MoviesColors.primaryColor,
       body: CustomScrollView(
@@ -101,6 +95,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomeContent() {
+    final config = Provider.of<ConfigViewModel>(context);
+
+    if (config.status == Status.loading) {
+      return SliverFillViewport(
+        delegate: SliverChildListDelegate([
+          Container(),
+        ]),
+      );
+    }
+
     // don't rebuild everything if only a single paginator changes
     final movies = Provider.of<MoviesViewModel>(context, listen: false);
 

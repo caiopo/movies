@@ -30,6 +30,14 @@ class ConfigViewModel extends ChangeNotifier {
     }
   }
 
+  String profileUrl(String path, int minWidth) {
+    if (path == null) {
+      return null;
+    }
+    String width = _findWidth(minWidth, _config.images.profileSizes);
+    return '${_config.images.imageBaseUrl}$width$path';
+  }
+
   String posterUrl(String path, int minWidth) {
     if (path == null) {
       return null;

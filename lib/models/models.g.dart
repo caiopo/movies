@@ -99,6 +99,8 @@ ImageConfig _$ImageConfigFromJson(Map<String, dynamic> json) {
     imageBaseUrl: json['secure_base_url'] as String,
     posterSizes:
         (json['poster_sizes'] as List)?.map((e) => e as String)?.toList(),
+    profileSizes:
+        (json['profile_sizes'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -106,4 +108,5 @@ Map<String, dynamic> _$ImageConfigToJson(ImageConfig instance) =>
     <String, dynamic>{
       'secure_base_url': instance.imageBaseUrl,
       'poster_sizes': instance.posterSizes,
+      'profile_sizes': instance.profileSizes,
     };

@@ -90,17 +90,18 @@ class Config {
   Map<String, dynamic> toJson() => _$ConfigToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class ImageConfig {
   @JsonKey(name: 'secure_base_url')
   final String imageBaseUrl;
 
-  @JsonKey(name: 'poster_sizes')
   final List<String> posterSizes;
+  final List<String> profileSizes;
 
   ImageConfig({
     this.imageBaseUrl,
     this.posterSizes,
+    this.profileSizes,
   });
 
   factory ImageConfig.fromJson(Map<String, dynamic> json) =>
