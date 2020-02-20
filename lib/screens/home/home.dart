@@ -43,12 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
       FocusScope.of(context).unfocus();
     }
 
+    // search infinite scroll
     final diff =
         _scrollController.position.maxScrollExtent - _scrollController.offset;
 
     if (diff < 300) {
       final movies = Provider.of<MoviesViewModel>(context, listen: false);
-      
       movies.searchResults.loadNextPage();
     }
   }
@@ -107,8 +107,24 @@ class _HomeScreenState extends State<HomeScreen> {
     return ChangeNotifierBuilder(
       notifier: movies.searchResults,
       builder: (context) {
-        if (movies.searchResults.loading ||
-            movies.searchResults.items.isNotEmpty) {
+        if (movies.query.isNotEmpty) {
+          if (!movies.searchResults.loading &&
+              movies.searchResults.items.isEmpty) {
+            return SliverList(
+              delegate: SliverChildListDelegate([
+                Center(
+                  child: Text(
+                    'No results',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ]),
+            );
+          }
+
           return MoviesGrid(paginator: movies.searchResults);
         }
 

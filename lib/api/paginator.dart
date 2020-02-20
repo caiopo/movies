@@ -28,7 +28,7 @@ class Paginator<T> extends ChangeNotifier {
 
       if (page != null) {
         items.addAll(page.results);
-        _finished = page.page == page.totalPages;
+        _finished = page.page >= page.totalPages;
         _nextPage++;
       }
       _loading = false;

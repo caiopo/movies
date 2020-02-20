@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/api/paginator.dart';
+import 'package:movies/screens/routes.dart';
 import 'package:movies/utils/colors.dart';
 import 'package:movies/widgets/change_notifier_builder.dart';
 import 'package:movies/widgets/movie_item.dart';
@@ -15,7 +16,12 @@ class MoviesRow extends StatelessWidget {
     this.paginator,
   }) : super(key: key);
 
-  void onSeeAllPressed() {}
+  void onSeeAllPressed(BuildContext context) {
+    Navigator.push(
+      context,
+      Routes.movieList(label: label, paginator: paginator),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +42,7 @@ class MoviesRow extends StatelessWidget {
               ),
               Spacer(),
               FlatButton(
-                onPressed: onSeeAllPressed,
+                onPressed: () => onSeeAllPressed(context),
                 child: Text(
                   'See all',
                   style: const TextStyle(

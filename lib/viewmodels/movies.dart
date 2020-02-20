@@ -34,6 +34,8 @@ class MoviesViewModel extends NestedChangeNotifier {
 
   Paginator<Movie> get searchResults => _searchResults;
 
+  String get query => _query;
+
   MoviesViewModel(this._service) {
     _nowPlaying = Paginator(_service.getNowPlaying);
     _popular = Paginator(_service.getPopular);
