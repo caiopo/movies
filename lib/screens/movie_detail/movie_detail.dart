@@ -94,6 +94,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   _buildInfos(),
                   SafeArea(
                     top: false,
+                    minimum: const EdgeInsets.only(bottom: 24),
                     child: Container(),
                   ),
                 ]),

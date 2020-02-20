@@ -9,7 +9,7 @@ class MoviesGrid extends SliverGrid {
           key: key,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 0.77,
+            childAspectRatio: 0.67,
           ),
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {

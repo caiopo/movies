@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movies/di/di.dart';
-import 'package:movies/models/models.dart';
 import 'package:movies/screens/home/home.dart';
 import 'package:movies/utils/colors.dart';
 import 'package:movies/viewmodels/config.dart';
@@ -22,7 +21,9 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => getIt<MoviesViewModel>()),
       ],
       child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
+        value: SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: Colors.transparent,
+        ),
         child: MaterialApp(
           title: 'Movies',
           debugShowCheckedModeBanner: false,
