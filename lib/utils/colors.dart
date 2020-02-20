@@ -5,6 +5,8 @@ abstract class MoviesColors {
   static const cyan = Color(0xFF5CA1D4);
   static const lightBlue = Color(0xFF8EBEE0);
 
+  static const grey = Color(0xFFBFC3C7);
+
   static const filledStar = Color(0xFFFCD30A);
   static const backgroundStar = Color(0xFF57573A);
 }

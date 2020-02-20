@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movies/api/response.dart';
 import 'package:movies/api/settings.dart';
+import 'package:movies/models/models.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'movies_service.g.dart';
@@ -25,6 +26,9 @@ abstract class MoviesService {
     @Query('query') String query,
     @Query('page') int page,
   );
+
+  @GET('/movie/{id}')
+  Future<Movie> movieDetail(@Path('id') int movieId);
 }
 
 @RegisterAs(MoviesService)

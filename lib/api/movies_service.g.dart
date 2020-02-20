@@ -110,4 +110,23 @@ class _MoviesService implements MoviesService {
     final value = MoviePage.fromJson(_result.data);
     return Future.value(value);
   }
+
+  @override
+  movieDetail(movieId) async {
+    ArgumentError.checkNotNull(movieId, 'movieId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/movie/$movieId',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = Movie.fromJson(_result.data);
+    return Future.value(value);
+  }
 }
