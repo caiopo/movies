@@ -183,7 +183,7 @@ class _ListHeaderDecoration extends StatelessWidget {
             ),
             child: SafeArea(
               bottom: false,
-              minimum: const EdgeInsets.only(bottom: 24),
+              minimum: const EdgeInsets.only(top: 24),
               child: Container(),
             ),
           ),

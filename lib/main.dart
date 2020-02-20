@@ -29,7 +29,7 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primarySwatch: Colors.blue,
-            textSelectionColor: MoviesColors.cyan,
+            accentColor: MoviesColors.cyan,
             brightness: Brightness.dark,
           ),
           home: HomeScreen(),

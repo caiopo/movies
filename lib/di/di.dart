@@ -9,6 +9,8 @@ final getIt = GetIt.instance;
 @injectableInit
 void configure() {
   $initGetIt(getIt);
+
+  // runs only if compiled in debug mode
   assert(() {
     getIt<Dio>().interceptors.add(PrettyDioLogger(responseBody: false));
     return true;
