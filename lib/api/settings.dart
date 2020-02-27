@@ -8,7 +8,7 @@ class ApiSettings {
 }
 
 @registerModule
-class DioModule {
+abstract class DioModule {
   @singleton
   Dio get dio => Dio(
         BaseOptions(

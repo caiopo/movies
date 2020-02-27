@@ -15,7 +15,7 @@ class Movie {
   @JsonKey(name: 'production_companies')
   final List<Company> companies;
 
-  Movie({
+  const Movie({
     this.id,
     this.title,
     this.overview,
@@ -33,9 +33,9 @@ class Movie {
 
 @JsonSerializable()
 class Company {
-  String name;
+  final String name;
 
-  Company({this.name});
+  const Company({this.name});
 
   factory Company.fromJson(Map<String, dynamic> json) =>
       _$CompanyFromJson(json);
@@ -45,9 +45,9 @@ class Company {
 
 @JsonSerializable()
 class Genre {
-  String name;
+  final String name;
 
-  Genre({this.name});
+  const Genre({this.name});
 
   factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
 
@@ -58,7 +58,7 @@ class Genre {
 class Credits {
   final List<CastMember> cast;
 
-  Credits({this.cast});
+  const Credits({this.cast});
 
   factory Credits.fromJson(Map<String, dynamic> json) =>
       _$CreditsFromJson(json);
@@ -71,7 +71,7 @@ class CastMember {
   final String name;
   final String profilePath;
 
-  CastMember({this.name, this.profilePath});
+  const CastMember({this.name, this.profilePath});
 
   factory CastMember.fromJson(Map<String, dynamic> json) =>
       _$CastMemberFromJson(json);
@@ -83,7 +83,7 @@ class CastMember {
 class Config {
   final ImageConfig images;
 
-  Config({this.images});
+  const Config({this.images});
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 
@@ -98,7 +98,7 @@ class ImageConfig {
   final List<String> posterSizes;
   final List<String> profileSizes;
 
-  ImageConfig({
+  const ImageConfig({
     this.imageBaseUrl,
     this.posterSizes,
     this.profileSizes,
