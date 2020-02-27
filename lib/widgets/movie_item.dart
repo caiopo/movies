@@ -24,6 +24,8 @@ class MovieItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final config = Provider.of<ConfigViewModel>(context);
 
+    print('oi');
+
     return InkWell(
       onTap: () async {
         await precacheImage(

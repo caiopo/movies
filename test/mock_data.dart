@@ -5,7 +5,6 @@ const testMovie = Movie(
   title: 'Frozen 2',
   overview: 'Elsa, Anna, Kristoff and Olaf head far into the forest to '
       'learn the truth about an ancient mystery of their kingdom.',
-  posterPath: '/h6Wi81XNXCjTAcdstiCLRykN3Pa.jpg',
   voteAverage: 7,
   releaseDate: '2019-11-20',
   genres: [
